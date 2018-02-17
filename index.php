@@ -10,11 +10,10 @@ if ((float)PCRE_VERSION < 7.9)
 // Load configuration
 $f3->config('config.ini');
 
-$f3->set('DB',
-    new DB\SQL (
-        'mysql:host=localhost;port=3306;dbname=local_base_for_testing',
-        'root',
-        ''
+$f3->set('DB', new DB\SQL(
+    'mysql:host=localhost;port=3306;dbname=local_base_for_testing',
+    'root',
+    ''
     )
 );
 
@@ -25,8 +24,11 @@ $f3->route('GET /',
 );
 
 $f3->route('GET /db',
-    function () {
-        echo('hello, it\'s db');
+    function () use ($f3) {
+        $result = $f3->get('DB')->exec('SELECT * FROM local_base_for_testing.for_testing');
+        header('Content-Type: application/json');
+        header("Access-Control-Allow-Origin: *");
+        echo json_encode($result);
     }
 );
 
