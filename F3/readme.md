@@ -42,10 +42,10 @@ The philosophy behind the framework and its approach to software architecture is
 
 ## Table of Contents
 
-* [Getting Started](#getting-started)
-* [Routing Engine](#routing-engine)
-* [Framework Variables](#framework-variables)
-* [Views and Templates](#views-and-templates)
+* [Getting Started](readme.mdrted)
+* [Routing Engine](readme.mdine)
+* [Framework Variables](readme.mdariables)
+* [Views and Templates](readme.mdemplates)
 * [Databases](#databases)
 * [Plug-Ins](#plug-ins)
 * [Optimization](#optimization)
