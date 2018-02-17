@@ -1,8 +1,8 @@
-[![Fat-Free Framework](ui/images/logo.png)](http://fatfree.sf.net/)
+[![Fat-Free Framework](index.php)](index.phpree.sf.net/)
 
 **A powerful yet easy-to-use PHP micro-framework designed to help you build dynamic and robust Web applications - fast!**
 
-[![Flattr this project](https://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=phpfatfree&url=https://github.com/bcosca/fatfree)
+[![Flattr this project](index.php.flattr.com/button/flattr-badge-large.png)](index.phpttr.com/submit/auto?user_id=phpfatfree&url=https://github.com/bcosca/fatfree)
 
 Condensed in a single ~65KB file, F3 (as we fondly call it) gives you solid foundation, a mature code base, and a no-nonsense approach to writing Web applications. Under the hood is an easy-to-use Web development tool kit, a high-performance URL routing and cache engine, built-in code highlighting, and support for multilingual applications. It's lightweight, easy-to-use, and fast. Most of all, it doesn't get in your way.
 
@@ -32,20 +32,20 @@ That's not all. F3 is packaged with other optional plug-ins that extend its capa
 
 Unlike other frameworks, F3 aims to be usable - not usual.
 
-[![Flattr this project](https://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=phpfatfree&url=https://github.com/bcosca/fatfree)
+[![Flattr this project](index.php.flattr.com/button/flattr-badge-large.png)](index.phpttr.com/submit/auto?user_id=phpfatfree&url=https://github.com/bcosca/fatfree)
 
 The philosophy behind the framework and its approach to software architecture is towards minimalism in structural components, avoiding application complexity and striking a balance between code elegance, application performance and programmer productivity.
 
-[![Paypal](ui/images/paypal.png)](https://www.paypal.me/fatfree)
+[![Paypal](index.php)](index.php.paypal.me/fatfree)
 
-![Bitcoin](ui/images/bitcoin.png)
+![Bitcoin](index.php)
 
 ## Table of Contents
 
-* [Getting Started](readme.mdrted)
-* [Routing Engine](readme.mdine)
-* [Framework Variables](readme.mdariables)
-* [Views and Templates](readme.mdemplates)
+* [Getting Started](index.phped)
+* [Routing Engine](index.phpe)
+* [Framework Variables](index.phpiables)
+* [Views and Templates](index.phpplates)
 * [Databases](#databases)
 * [Plug-Ins](#plug-ins)
 * [Optimization](#optimization)
