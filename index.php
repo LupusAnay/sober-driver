@@ -41,12 +41,17 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 /** @doc
  * Конфигурация маршрутизации
  */
+
 //$f3->route('GET /',
 //    function () {
-//        echo('hello, it\'s root');
+//        $str = 'fuck';
+//        if(0 == false) {
+//            echo ('0 == false');
+//        } else echo ('0 != false');
+//        echo $str;
 //    }
 //);
-//
+
 //$f3->route('GET /db',
 //    function () use ($f3) {
 //        header('Content-Type: application/json; charset=utf-8');
