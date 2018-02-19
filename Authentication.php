@@ -8,6 +8,11 @@
 
 class Authentication
 {
+    /** @doc
+     * @temp Производит проверку тела POST запроса (позже проверка будет делом отдельного модуля)
+     * и создает нового пользователя
+     * @temp на данный момент будет записывать просто в БД, без создания дополнительных маршрутов
+     */
     public static function register(Base $f3, $params) {
         $body = json_decode($f3->get('BODY'));
         $data_invalid = false;

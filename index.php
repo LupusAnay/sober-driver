@@ -60,6 +60,10 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 //    }
 //);
 
+/** @doc
+ * Конфигурация маршрутизации для регистрации. Вызывает статический метод register() класса Authentication и неявно
+ * передает ему параметры $f3 и $params
+ */
 $f3->route('POST /registration', 'Authentication::register');
 
 /** @doc
