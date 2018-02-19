@@ -41,21 +41,21 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 /** @doc
  * Конфигурация маршрутизации
  */
-$f3->route('GET /',
-    function () {
-        echo('hello, it\'s root');
-    }
-);
+//$f3->route('GET /',
+//    function () {
+//        echo('hello, it\'s root');
+//    }
+//);
+//
+//$f3->route('GET /db',
+//    function () use ($f3) {
+//        header('Content-Type: application/json; charset=utf-8');
+//        $result = $f3->get('DB')->exec('SELECT * FROM local_base_for_testing.for_testing');
+//        echo json_encode($result);
+//    }
+//);
 
-$f3->route('GET /db',
-    function () use ($f3) {
-        header('Content-Type: application/json; charset=utf-8');
-        $result = $f3->get('DB')->exec('SELECT * FROM local_base_for_testing.for_testing');
-        echo json_encode($result);
-    }
-);
-
-$f3->route('GET /registration', 'Controller\Auth::register($params)');
+$f3->route('POST /registration', 'Authentication::register');
 
 /** @doc
  * Запуск фреймворка
