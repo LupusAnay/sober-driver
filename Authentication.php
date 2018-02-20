@@ -6,35 +6,60 @@
  * Time: 13:51
  */
 
+//TODO Добвать документацию
 class Authentication
 {
     /** @doc
      * @temp Производит проверку тела POST запроса (позже проверка будет делом отдельного модуля)
      * и создает нового пользователя
      * @temp на данный момент будет записывать просто в БД, без создания дополнительных маршрутов
+     * @param Base $f3 - переменная Класса Дескриптора фреймворка FatFree
+     * @param $params - параметры запроса
      */
-    public static function register(Base $f3, $params) {
+    public static function register(Base $f3, $params)
+    {
         $body = json_decode($f3->get('BODY'));
-        $data_invalid = false;
-        //TODO Вынести валидацию входных данных для регистрации в отдельный модуль (mb класс)
-        foreach($body as $key => $value) {
-            if($key == "first_name" or $key == "second_name") {
-                if(!preg_match('A-Za-zА-Яа-я', $value)) {
-                    $data_invalid = true;
-                    break;
-                }
-                if(strlen($value) <= 16 and strlen($value) > 1) {
-                    $value = ucwords($value);
-                } else {
-                    $data_invalid = true;
-                    break;
-                }
-            }
+
+        if(Authentication::validateRegistrationData($body)) {
+            //TODO Создать параметризированный запрос для вставки данных в БД
+        } else {
+            echo $f3->error('422', 'Неверные данные для регистрации');
         }
     }
 
-    public static function login() {
+    public static function login()
+    {
         //TODO Сделать это
     }
 
+    public static function validateRegistrationData($body) {
+        $validator = new Validator();
+        $keys = ['first_name', 'second_name', 'birthday', 'passport', 'driver_license', 'phone', 'password'];
+        $isValid = true;
+
+        if (count($body) == 7) {
+            for ($i = 0; $i < count($body); $i++) {
+                if (!array_key_exists($keys[$i], $body)) {
+                    $isValid = false;
+                    break;
+                }
+            }
+            $result = 0;
+            $result += !$validator->validateName($body['first_name']);
+            $result += !$validator->validateName($body['second_name']);
+
+            $result += !$validator->validateDate($body['birthday']);
+            $result += !$validator->validateDoc($body['passport']);
+            $result += !$validator->validateDoc($body['driver_license']);
+            $result += !$validator->validatePhone($body['password']);
+
+            if($result != 0) {
+                $isValid = false;
+            }
+        }
+        else {
+            $isValid = false;
+        }
+        return $isValid;
+    }
 }

@@ -8,7 +8,7 @@
 /** @doc
  * Access-Control-Allow-Origin (разрешает производить запросы к ресурсу со сторонних доменов)
  */
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
 
 /** @doc
  * Подключение заголовочного файла фреймворка FatFree
@@ -44,7 +44,7 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 
 $f3->route('GET /',
     function () {
-        echo 'Привет мир, я кодировка';
+        echo 0 + true;
     }
 );
 
