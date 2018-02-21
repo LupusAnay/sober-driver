@@ -15,7 +15,7 @@ class Validator
         if (!preg_match('[A-Za-zА-Яа-я]', $name)) {
             return false;
         }
-        if (strlen($name) > 16 and strlen($name) <= 1) {
+        if (strlen($name) > 16 or strlen($name) <= 1) {
             return false;
         }
         return true;

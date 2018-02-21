@@ -29,7 +29,11 @@ class Authentication
 
     public static function login()
     {
-        //TODO Сделать это
+        $body = json_decode($f3->get('BODY'));
+        $keys = ['phone', 'password'];
+        $isRight = true;
+        $query = '`Select from `'
+
     }
 
     public static function validateRegistrationData($body) {
