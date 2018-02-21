@@ -18,10 +18,15 @@ class Authentication
      */
     public static function register(Base $f3, $params)
     {
-        $body = json_decode($f3->get('BODY'));
+        $body = json_decode($f3->get('BODY'), true);
 
-        if(Authentication::validateRegistrationData($body)) {
-            //TODO Создать параметризированный запрос для вставки данных в БД
+        if (Authentication::validateRegistrationData($body)) {
+            $f3->get('DB')->exec(
+                'INSERT INTO local_base_for_testing.employees (first_name, second_name, birthday, passport, driver_license,  phone, password, points) 
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
+                array_values($body)
+            );
+
         } else {
             echo $f3->error('422', 'Неверные данные для регистрации');
         }
@@ -32,7 +37,8 @@ class Authentication
         //TODO Сделать это
     }
 
-    public static function validateRegistrationData($body) {
+    public static function validateRegistrationData($body)
+    {
         $validator = new Validator();
         $keys = ['first_name', 'second_name', 'birthday', 'passport', 'driver_license', 'phone', 'password'];
         $isValid = true;
@@ -45,19 +51,18 @@ class Authentication
                 }
             }
             $result = 0;
+
             $result += !$validator->validateName($body['first_name']);
             $result += !$validator->validateName($body['second_name']);
-
             $result += !$validator->validateDate($body['birthday']);
             $result += !$validator->validateDoc($body['passport']);
             $result += !$validator->validateDoc($body['driver_license']);
-            $result += !$validator->validatePhone($body['password']);
+            $result += !$validator->validatePhone($body['phone']);
 
-            if($result != 0) {
+            if ($result != 0) {
                 $isValid = false;
             }
-        }
-        else {
+        } else {
             $isValid = false;
         }
         return $isValid;

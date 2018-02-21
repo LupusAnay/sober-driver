@@ -9,6 +9,7 @@
  * Access-Control-Allow-Origin (разрешает производить запросы к ресурсу со сторонних доменов)
  */
 header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: Content-Type");
 
 /** @doc
  * Подключение заголовочного файла фреймворка FatFree

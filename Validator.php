@@ -12,10 +12,10 @@ class Validator
 
     public function validateName($name)
     {
-        if (!preg_match('[A-Za-zА-Яа-я]', $name)) {
+        if (!preg_match('/[A-zА-я]/', $name)) {
             return false;
         }
-        if (strlen($name) > 16 and strlen($name) <= 1) {
+        if (strlen($name) > 16 or strlen($name) <= 1) {
             return false;
         }
         return true;
@@ -23,7 +23,7 @@ class Validator
 
     public function validateDate($date)
     {
-        if (!preg_match('[([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))]', $date)) {
+        if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
             return false;
         }
 
@@ -39,7 +39,8 @@ class Validator
 
     public function validateDoc($value)
     {
-        if (!preg_match('[0-9]{10}', $value)) {
+        if (!preg_match('/^[0-9]{10}$/', $value)) {
+
             return false;
         }
         return true;
@@ -47,7 +48,7 @@ class Validator
 
     public function validatePhone($value)
     {
-        if (!preg_match('^((\+7)+([0-9]){10})$', $value)) {
+        if (!preg_match('/^((\+7)+([0-9]){10})$/', $value)) {
             return false;
         }
         return true;
