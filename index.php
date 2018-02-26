@@ -45,7 +45,14 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 
 $f3->route('GET /',
     function () {
-        echo 0 + true;
+        $pass = password_hash('fuckme', PASSWORD_DEFAULT);
+        echo $pass;
+        echo '<br>';
+        if (password_verify('fuckme', $pass)) {
+            echo 'works';
+        } else {
+            echo 'doesn\'t';
+        }
     }
 );
 

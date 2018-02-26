@@ -21,6 +21,12 @@ class Authentication
         $body = json_decode($f3->get('BODY'), true);
 
         if (Authentication::validateRegistrationData($body)) {
+            /**
+             * @warn
+             * Использование обычного HTTP для передачи паролей без шифрования не безопасно.
+             */
+            $body['password'] = password_hash($body['password'], PASSWORD_DEFAULT);
+
             $f3->get('DB')->exec(
                 'INSERT INTO local_base_for_testing.employees (first_name, second_name, birthday, passport, driver_license,  phone, password, points) 
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
@@ -31,7 +37,6 @@ class Authentication
             echo $f3->error('422', 'Неверные данные для регистрации');
         }
     }
-
     public static function login()
     {
         //TODO Сделать это
