@@ -39,10 +39,6 @@ class Authentication
     }
     public static function login()
     {
-        $body = json_decode($f3->get('BODY'));
-        $keys = ['phone', 'password'];
-        $isRight = true;
-        $query = '`Select from `'
 
     }
 
