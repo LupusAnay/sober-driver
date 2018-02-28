@@ -62,7 +62,9 @@ $f3->route('GET /',
  * передает ему параметры $f3 и $params
  */
 $f3->route('POST /registration', 'Authentication::register');
-
+$f3->map('/orders/@id', 'Order');
+$f3->route('GET /orders', 'Order::findAll');
+$f3->route('POST /addOrder', 'Order::addNewOrder');
 /** @doc
  * Запуск фреймворка
  */
