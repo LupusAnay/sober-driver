@@ -27,6 +27,6 @@ class Order
         echo json_encode($result);
     }
     public static function addNewOrder(Base $f3) {
-        //TODO: Пильнуть добавление заказа
+        //TODO: РџРёР»СЊРЅСѓС‚СЊ РґРѕР±Р°РІР»РµРЅРёРµ Р·Р°РєР°Р·Р°
     }
 }
