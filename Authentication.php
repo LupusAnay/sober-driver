@@ -16,7 +16,7 @@ class Authentication
      * @param Base $f3 - переменная Класса Дескриптора фреймворка FatFree
      * @param $params - параметры запроса
      */
-    public static function register(Base $f3, $params)
+    public static function register(Base $f3)
     {
         $body = json_decode($f3->get('BODY'), true);
 
@@ -28,7 +28,7 @@ class Authentication
             $body['password'] = password_hash($body['password'], PASSWORD_DEFAULT);
 
             $f3->get('DB')->exec(
-                'INSERT INTO local_base_for_testing.employees (first_name, second_name, birthday, passport, driver_license,  phone, password, points) 
+                'INSERT INTO employees (first_name, second_name, birthday, passport, driver_license,  phone, password, points) 
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
@@ -37,9 +37,13 @@ class Authentication
             echo $f3->error('422', 'Неверные данные для регистрации');
         }
     }
-    public static function login()
-    {
 
+    public static function login(Base $f3)
+    {
+        $body = json_decode($f3->get('BODY'), true);
+        $db = $f3->get('DB');
+        $result = $db->exec('SELECT password FROM employees WHERE phone = \'+79119119191\'', array(':phone' => $body['phone']));
+        echo $result;
     }
 
     public static function validateRegistrationData($body)
