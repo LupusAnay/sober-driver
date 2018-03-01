@@ -23,7 +23,7 @@ class Order
         $f3->get('PARAMS.id'));
     }
     public static function findAll(Base $f3) {
-        $result = $f3->get('DB')->exec('SELECT * FROM orders, executed_orders');
+        $result = $f3->get('DB')->exec('SELECT * FROM orders');
         echo json_encode($result);
     }
     public static function addNewOrder(Base $f3){
