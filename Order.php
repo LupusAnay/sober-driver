@@ -30,8 +30,9 @@ class Order
         $body = json_decode($f3->get('BODY'), true);
 
         if (Order::validateOrderData($body)) {
+            array_push($body, date('y-m-d'));
             $f3->get('DB')->exec(
-                'INSERT INTO orders (`from`, `to`, value) VALUE (?, ?, ?)',
+                "INSERT INTO orders (`from`, `to`, value, date) VALUE (?, ?, ?, ?)",
                 array_values($body)
             );
         } else {
