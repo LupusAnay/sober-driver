@@ -32,7 +32,7 @@ class Order
         if (Order::validateOrderData($body)) {
             array_push($body, date('y-m-d'));
             $f3->get('DB')->exec(
-                "INSERT INTO orders (`from`, `to`, value, date) VALUE (?, ?, ?, ?)",
+                "INSERT INTO orders (`from`, `to`, value, client_id, date) VALUE (?, ?, ?, ?, ?)",
                 array_values($body)
             );
         } else {
@@ -41,10 +41,10 @@ class Order
     }
     public static function validateOrderData($body) {
         $validator = new Validator();
-        $keys = ['from', 'to', 'value'];
+        $keys = ['from', 'to', 'value', 'client_id'];
         $isValid = true;
 
-        if (count($body) == 3) {
+        if (count($body) == 4) {
             for ($i = 0; $i < count($body); $i++) {
                 if (!array_key_exists($keys[$i], $body)) {
                     $isValid = false;
