@@ -10,7 +10,7 @@
 class Validator
 {
     public function validateValue($value) {
-        if (strlen($value) > 3) {
+        if (strlen($value) > 4) {
             return false;
         }
         return true;
