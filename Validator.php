@@ -9,6 +9,21 @@
 //TODO Добвать документацию
 class Validator
 {
+    public function validateValue($value) {
+        if (strlen($value) > 3) {
+            return false;
+        }
+        return true;
+     }
+    public function validateCoordinates($value) {
+        if (!preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $value)) {
+            return false;
+        }
+        if (strlen($value) != 20){
+            return false;
+        }
+        return true;
+    }
 
     public function validateName($name)
     {
