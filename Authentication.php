@@ -42,8 +42,8 @@ class Authentication
     {
         $body = json_decode($f3->get('BODY'), true);
         $db = $f3->get('DB');
-        $result = $db->exec('SELECT password FROM employees WHERE phone = \'+79119119191\'', array(':phone' => $body['phone']));
-        echo $result;
+        $result = $f3->get('DB')->exec('SELECT password FROM employees WHERE phone = :phone', array(':phone' => $body['phone']));
+        return (bool)password_verify($body['password'], $result[0]['password']);
     }
 
     public static function validateRegistrationData($body)

@@ -46,14 +46,14 @@ $f3->set('DB', new DB\SQL($dsn, $user, $pw));
 $f3->route('GET /',
     function () use ($f3) {
         $db = $f3->get('DB');
-        $result = $f3->get('DB')->exec('SELECT password FROM local_base_for_testing.employees WHERE phone = \'+79119119191\'');
-
+        $result = $f3->get('DB')->exec('SELECT password FROM employees WHERE phone = \'+79119119191\'');
+        echo $result[0]['password'];
     }
 );
 
 $f3->route('POST /login',
     function () use ($f3) {
-        echo Authentication::login($f3);
+        echo json_encode(Authentication::login($f3));
     }
 );
 
