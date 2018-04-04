@@ -54,8 +54,8 @@ class Order
             $result = 0;
 
             $result += !$validator->validateValue($body['value']);
-            $result += !$validator->validateCoordinates($body['from']);
-            $result += !$validator->validateCoordinates($body['to']);
+            //$result += !$validator->validateCoordinates($body['from']);
+            //$result += !$validator->validateCoordinates($body['to']);
             $result += !$validator->validateName($body['client_name']);
             $result += !$validator->validatePhone($body['client_number']);
 
