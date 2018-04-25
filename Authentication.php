@@ -18,23 +18,23 @@ class Authentication
      */
     public static function register(Base $f3)
     {
+        echo $f3->get('BODY') . "\n\n";
         $body = json_decode($f3->get('BODY'), true);
-
-        if (Authentication::validateRegistrationData($body)) {
+        $msg = Authentication::validateRegistrationData($body);
+        if ($msg === true) {
             /**
              * @warn
              * Использование обычного HTTP для передачи паролей без шифрования не безопасно.
              */
             $body['password'] = password_hash($body['password'], PASSWORD_DEFAULT);
-
             $f3->get('DB')->exec(
-                'INSERT INTO employees (first_name, second_name, birthday, passport, driver_license,  phone, password, points) 
+                'INSERT INTO employees (first_name, second_name, birthday, passport, driver_license, phone, password, points) 
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
 
         } else {
-            echo $f3->error('422', 'Неверные данные для регистрации');
+            echo $f3->error('422', 'Invalid registration data: ' . $msg);
         }
     }
 
@@ -50,30 +50,27 @@ class Authentication
     {
         $validator = new Validator();
         $keys = ['first_name', 'second_name', 'birthday', 'passport', 'driver_license', 'phone', 'password'];
-        $isValid = true;
 
-        if (count($body) == 7) {
-            for ($i = 0; $i < count($body); $i++) {
-                if (!array_key_exists($keys[$i], $body)) {
-                    $isValid = false;
-                    break;
-                }
+        if (count($body) !== 7) return "Invalid count of entities\r\n";
+
+        for ($i = 0; $i < count($body); $i++) {
+            if (!array_key_exists($keys[$i], $body)) {
+                return "Could not found some entities\r\n";
             }
-            $result = 0;
-
-            $result += !$validator->validateName($body['first_name']);
-            $result += !$validator->validateName($body['second_name']);
-            $result += !$validator->validateDate($body['birthday']);
-            $result += !$validator->validateDoc($body['passport']);
-            $result += !$validator->validateDoc($body['driver_license']);
-            $result += !$validator->validatePhone($body['phone']);
-
-            if ($result != 0) {
-                $isValid = false;
-            }
-        } else {
-            $isValid = false;
         }
-        return $isValid;
+        $result = "";
+        $result .= $validator->validateName($body['first_name']);
+        $result .= $validator->validateName($body['second_name']);
+        $result .= $validator->validateDate($body['birthday']);
+        $result .= $validator->validateDoc($body['passport']);
+        $result .= $validator->validateDoc($body['driver_license']);
+        $result .= $validator->validatePhone($body['phone']);
+
+        if ($result != "") {
+            echo $result;
+            return $result;
+        } else {
+            return true;
+        }
     }
 }

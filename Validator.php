@@ -10,36 +10,40 @@
 class Validator
 {
     public function validateValue($value) {
+        $msg = "Invalid value\r\n";
         if (strlen($value) > 4) {
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
      }
     public function validateCoordinates($value) {
+        $msg = "Invalid coordinates\r\n";
         if (!preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $value)) {
-            return false;
+            return $msg;
         }
         if (strlen($value) != 20){
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
     }
 
     public function validateName($name)
     {
+        $msg = "Invalid name\r\n";
         if (!preg_match('/[A-zА-я]/', $name)) {
-            return false;
+            return $msg;
         }
         if (strlen($name) > 16 or strlen($name) <= 1) {
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
     }
 
     public function validateDate($date)
     {
+        $msg = "Invalid date\r\n";
         if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
-            return false;
+            return $msg;
         }
 
         $d1 = new DateTime($date);
@@ -47,25 +51,26 @@ class Validator
         $diff = $d2->diff($d1);
 
         if ($diff->y < 18) {
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
     }
 
     public function validateDoc($value)
     {
+        $msg = "Invalid doc\r\n";
         if (!preg_match('/^[0-9]{10}$/', $value)) {
-
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
     }
 
     public function validatePhone($value)
     {
+        $msg = "Invalid phone\r\n";
         if (!preg_match('/^((\+7)+([0-9]){10})$/', $value)) {
-            return false;
+            return $msg;
         }
-        return true;
+        return "";
     }
 }
