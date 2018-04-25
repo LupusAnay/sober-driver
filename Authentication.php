@@ -31,9 +31,10 @@ class Authentication
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
-
+            echo json_encode(array('result'=>'success', 'what'=>'Registration successful'));
         } else {
-            echo $f3->error('422', 'Invalid registration data: ' . $msg);
+            http_response_code(422);
+            echo json_encode(array('result' => 'error', 'what' => $msg));
         }
     }
 
