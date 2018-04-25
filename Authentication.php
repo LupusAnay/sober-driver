@@ -18,7 +18,6 @@ class Authentication
      */
     public static function register(Base $f3)
     {
-        echo $f3->get('BODY') . "\n\n";
         $body = json_decode($f3->get('BODY'), true);
         $msg = Authentication::validateRegistrationData($body);
         if ($msg === true) {
@@ -67,7 +66,6 @@ class Authentication
         $result .= $validator->validatePhone($body['phone']);
 
         if ($result != "") {
-            echo $result;
             return $result;
         } else {
             return true;
