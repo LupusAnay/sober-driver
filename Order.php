@@ -32,7 +32,7 @@ class Order
         if (Order::validateOrderData($body)) {
             array_push($body, date('y-m-d'));
             $f3->get('DB')->exec(
-                "INSERT INTO orders (`from`, `to`, value, client_id, date) VALUE (?, ?, ?, ?, ?)",
+                "INSERT INTO orders (`from`, `to`, value, client_name, client_number, date) VALUE (?, ?, ?, ?, ?, ?)",
                 array_values($body)
             );
         } else {
@@ -41,10 +41,10 @@ class Order
     }
     public static function validateOrderData($body) {
         $validator = new Validator();
-        $keys = ['from', 'to', 'value', 'client_id'];
+        $keys = ['from', 'to', 'value','client_number','client_name' ];
         $isValid = true;
 
-        if (count($body) == 4) {
+        if (count($body) == 5) {
             for ($i = 0; $i < count($body); $i++) {
                 if (!array_key_exists($keys[$i], $body)) {
                     $isValid = false;
@@ -54,8 +54,10 @@ class Order
             $result = 0;
 
             $result += !$validator->validateValue($body['value']);
-            $result += !$validator->validateCoordinates($body['from']);
-            $result += !$validator->validateCoordinates($body['to']);
+            //$result += !$validator->validateCoordinates($body['from']);
+            //$result += !$validator->validateCoordinates($body['to']);
+            $result += !$validator->validateName($body['client_name']);
+            $result += !$validator->validatePhone($body['client_number']);
 
             if ($result != 0) {
                 $isValid = false;
