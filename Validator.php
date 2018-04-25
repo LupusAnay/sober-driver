@@ -30,7 +30,7 @@ class Validator
     public function validateName($name)
     {
         $msg = "Invalid name\r\n";
-        if (!preg_match('/[A-zА-я]/', $name)) {
+        if (!preg_match('/^[A-zА-я]+$/', $name)) {
             return $msg;
         }
         if (strlen($name) > 16 or strlen($name) <= 1) {
