@@ -20,6 +20,7 @@ class Authentication
     {
         $body = json_decode($f3->get('BODY'), true);
         $msg = Authentication::validateRegistrationData($body);
+        $validator = new Validator();
         if ($msg === true) {
             /**
              * @warn
@@ -31,7 +32,7 @@ class Authentication
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
-            echo json_encode(array('result'=>'success', 'what'=>'Registration successful'));
+            echo json_encode(array('result' => 'success', 'what' => 'Registration successful'));
         } else {
             http_response_code(422);
             echo json_encode(array('result' => 'error', 'what' => $msg));

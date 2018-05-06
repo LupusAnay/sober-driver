@@ -70,6 +70,7 @@ $f3->route('POST /login',
  * Конфигурация маршрутизации для регистрации. Вызывает статический метод register() класса Authentication и неявно
  * передает ему параметры $f3 и $params
  */
+header('Content-Type: application/json; charset=utf-8');
 $f3->route('POST /registration', 'Authentication::register');
 $f3->map('/orders/@id', 'Order');
 $f3->route('GET /orders', 'Order::findAll');
