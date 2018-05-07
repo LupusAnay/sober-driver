@@ -21,9 +21,6 @@ class Validator
         if (!preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $value)) {
             return $msg;
         }
-        if (strlen($value) != 20){
-            return $msg;
-        }
         return "";
     }
 
@@ -33,7 +30,7 @@ class Validator
         if (!preg_match('/^[A-zА-я]+$/u', $name)) {
             return $msg;
         }
-        if (strlen($name) > 16 or strlen($name) <= 1) {
+        if (strlen($name) > 32 or strlen($name) <= 2) {
             return $msg;
         }
         return "";
