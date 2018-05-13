@@ -10,7 +10,7 @@
  */
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Content-Type");
-
+header('Access-Control-Allow-Credentials: true');
 /** @doc
  * Подключение заголовочного файла фреймворка FatFree
  */
@@ -54,7 +54,9 @@ class Main
 {
     static function beforeroute(Base $f3)
     {
-       echo json_encode($f3->get('SESSION.logged'));
+       if($f3->get('SESSION.logged') != true) {
+
+       }
     }
 }
 $f3->route('POST /login',
@@ -64,14 +66,14 @@ $f3->route('POST /login',
     }
 );
 
-$f3->route('GET /kill',
+$f3->route('GET /session',
     function () use ($f3) {
-        $f3->clear('SESSION.logged');
+        echo json_encode($f3->get('SESSION'));
     }
 );
-$f3->route('GET /status',
+$f3->route('GET /kill',
     function () use ($f3) {
-        echo json_encode($f3->get('SESSION.logged'));
+        $f3->clear('SESSION');
     }
 );
 
@@ -92,8 +94,6 @@ $f3->route('POST /registration', 'Authentication::register');
 $f3->map('/orders/@id', 'Order');
 $f3->route('GET /orders', 'Order::findAll');
 $f3->route('POST /addOrder', 'Order::addNewOrder');
-$f3->route('GET /setTR', 'Authentication::session_true'); //TODO: Убрать дерьмо для тестов
-$f3->route('GET /setFL', 'Authentication::session_false');
 /** @doc
  * Запуск фреймворка
  */

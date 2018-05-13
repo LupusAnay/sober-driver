@@ -18,19 +18,45 @@ class Order extends Main
         } else {
             echo $f3->error('404');
         }
-
     }
 
     public static function put(Base $f3)
     {
+        $parameter = $f3->get('PARAMS.id');
+        $f3->get('DB')->exec("UPDATE orders SET status = 'taken' WHERE id = ?",
+            $parameter);
+        $f3->set('SESSION.order', $parameter);
+    }
+    public static function delete(Base $f3)
+    {
         $f3->get('DB')->exec("UPDATE orders SET status = 'taken' WHERE id = ?",
             $f3->get('PARAMS.id'));
+        $f3->clear('SESSION.client_order');
     }
 
     public static function findAll(Base $f3)
     {
-        $result = $f3->get('DB')->exec('SELECT * FROM orders');
-        echo json_encode($result);
+        if($f3->get('SESSION.order') != null) {
+            $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
+                $f3->get('SESSION.order'));
+            if (count($result) != 0) {
+                echo json_encode($result);
+            } else {
+                echo $f3->error('404');
+            }
+
+        } else if($f3->get('SESSION.client_order') != null){
+            $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE client_number = ?',
+                $f3->get('SESSION.client_order'));
+            if (count($result) != 0) {
+                echo json_encode($result);
+            } else {
+                echo $f3->error('404');
+            }
+        } else {
+            $result = $f3->get('DB')->exec('SELECT * FROM orders');
+            echo json_encode($result);
+        }
     }
 
     public static function addNewOrder(Base $f3)
@@ -45,6 +71,7 @@ class Order extends Main
                 "INSERT INTO orders (`from`, `to`, value, client_name, client_number, date) VALUE (?, ?, ?, ?, ?, ?)",
                 array_values($body)
             );
+            $f3->set('SESSION.client_order', $body['client_number']);
             echo json_encode(array('result'=>'success', 'what'=>'Order was successfully added'));
         } else {
             http_response_code(422);

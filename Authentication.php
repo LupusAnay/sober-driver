@@ -16,12 +16,7 @@ class Authentication extends Main
      * @param Base $f3 - переменная Класса Дескриптора фреймворка FatFree
      * @param $params - параметры запроса
      */
-    public static function session_true(Base $f3) {
-        $f3->set('SESSION.logged', true);
-    }
-    public static function session_false(Base $f3) {
-        $f3->set('SESSION.logged', false);
-    }
+
     public static function register(Base $f3)
     {
         $body = json_decode($f3->get('BODY'), true);
@@ -38,6 +33,7 @@ class Authentication extends Main
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
+            $f3->get('SESSION.logged', true);
             echo json_encode(array('result' => 'success', 'what' => 'Registration successful'));
         } else {
             http_response_code(422);
@@ -50,7 +46,12 @@ class Authentication extends Main
         $body = json_decode($f3->get('BODY'), true);
         $db = $f3->get('DB');
         $result = $f3->get('DB')->exec('SELECT password FROM employees WHERE phone = :phone', array(':phone' => $body['phone']));
-        return (bool)password_verify($body['password'], $result[0]['password']);
+        if((bool)password_verify($body['password'], $result[0]['password'])) {
+            $f3->set('SESSION.logged', true);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function validateRegistrationData($body)
