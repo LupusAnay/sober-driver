@@ -7,7 +7,7 @@
  */
 
 //TODO Добвать документацию
-class Authentication
+class Authentication extends Main
 {
     /** @doc
      * @temp Производит проверку тела POST запроса (позже проверка будет делом отдельного модуля)
@@ -16,6 +16,12 @@ class Authentication
      * @param Base $f3 - переменная Класса Дескриптора фреймворка FatFree
      * @param $params - параметры запроса
      */
+    public static function session_true(Base $f3) {
+        $f3->set('SESSION.logged', true);
+    }
+    public static function session_false(Base $f3) {
+        $f3->set('SESSION.logged', false);
+    }
     public static function register(Base $f3)
     {
         $body = json_decode($f3->get('BODY'), true);

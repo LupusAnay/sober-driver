@@ -6,8 +6,9 @@
  * Time: 19:46
  */
 
-class Order
+class Order extends Main
 {
+
     public static function get(Base $f3)
     {
         $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
@@ -17,6 +18,7 @@ class Order
         } else {
             echo $f3->error('404');
         }
+
     }
 
     public static function put(Base $f3)

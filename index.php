@@ -15,7 +15,6 @@ header("Access-Control-Allow-Headers: Content-Type");
  * Подключение заголовочного файла фреймворка FatFree
  */
 $f3 = require('lib/base.php');
-
 /** @doc
  * Устанавливает параметры отладки и проверяет версию PCRE
  */
@@ -51,12 +50,30 @@ $f3->route('GET /',
     }
 );
 
+class Main
+{
+    static function beforeroute(Base $f3)
+    {
+       echo json_encode($f3->get('SESSION.logged'));
+    }
+}
 $f3->route('POST /login',
     function () use ($f3) {
         echo json_encode(Authentication::login($f3));
+
     }
 );
 
+$f3->route('GET /kill',
+    function () use ($f3) {
+        $f3->clear('SESSION.logged');
+    }
+);
+$f3->route('GET /status',
+    function () use ($f3) {
+        echo json_encode($f3->get('SESSION.logged'));
+    }
+);
 
 //$f3->route('GET /db',
 //    function () use ($f3) {
@@ -75,6 +92,8 @@ $f3->route('POST /registration', 'Authentication::register');
 $f3->map('/orders/@id', 'Order');
 $f3->route('GET /orders', 'Order::findAll');
 $f3->route('POST /addOrder', 'Order::addNewOrder');
+$f3->route('GET /setTR', 'Authentication::session_true'); //TODO: Убрать дерьмо для тестов
+$f3->route('GET /setFL', 'Authentication::session_false');
 /** @doc
  * Запуск фреймворка
  */
