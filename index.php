@@ -9,6 +9,7 @@
  * Access-Control-Allow-Origin (разрешает производить запросы к ресурсу со сторонних доменов)
  */
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Headers: Content-Type");
 
 /** @doc
@@ -60,7 +61,6 @@ class Main
 $f3->route('POST /login',
     function () use ($f3) {
         echo json_encode(Authentication::login($f3));
-
     }
 );
 
