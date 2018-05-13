@@ -9,7 +9,6 @@
  * Access-Control-Allow-Origin (разрешает производить запросы к ресурсу со сторонних доменов)
  */
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Credentials: true');
 header("Access-Control-Allow-Headers: Content-Type");
 header('Access-Control-Allow-Credentials: true');
 /** @doc
