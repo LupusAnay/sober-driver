@@ -29,11 +29,6 @@ class Order extends Main
             $f3->get('PARAMS.id'));
     }
 
-    public static function delete(Base $f3) {
-        $f3->get('DB')->exec("DELETE FROM orders WHERE id = ?",
-            $f3->get('PARAMS.id'));
-    }
-
     public static function findAll(Base $f3)
     {
         if($f3->get('SESSION.order') != null) {
