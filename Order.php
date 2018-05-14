@@ -29,9 +29,14 @@ class Order extends Main
     }
     public static function delete(Base $f3)
     {
-        $f3->get('DB')->exec("UPDATE orders SET status = 'taken' WHERE id = ?",
+        $f3->get('DB')->exec("DELETE from orders WHERE id = ?",
             $f3->get('PARAMS.id'));
-        $f3->clear('SESSION.client_order');
+        if($f3->get('SESSION.client_order') != null) {
+            $f3->clear('SESSION.client_order');
+        } else if(($f3->get('SESSION.order')) != null) {
+            $f3->clear('SESSION.order');
+        }
+
     }
 
     public static function findAll(Base $f3)
