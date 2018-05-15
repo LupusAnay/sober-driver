@@ -52,12 +52,12 @@ $f3->route('GET /',
 
 class Main
 {
-    static function beforeroute(Base $f3)
+    /*static function beforeroute(Base $f3)
     {
        if($f3->get('SESSION.logged') != true) {
 
        }
-    }
+    }*/
 }
 $f3->route('POST /login',
     function () use ($f3) {
@@ -75,6 +75,12 @@ $f3->route('GET /kill',
         $f3->clear('SESSION');
     }
 );
+$f3->route('GET /order_complete',
+    function () use ($f3) {
+        $f3->clear('SESSION.order_id');
+        $f3->clear('SESSION.order');
+    }
+);
 
 //$f3->route('GET /db',
 //    function () use ($f3) {
@@ -90,9 +96,13 @@ $f3->route('GET /kill',
  */
 header('Content-Type: application/json; charset=utf-8');
 $f3->route('POST /registration', 'Authentication::register');
-$f3->map('/orders/@id', 'Order');
+//$f3->map('/order', 'Order'); TODO: Закодить нормальный map
+$f3->route('PUT /take_order/@id', 'Order::put');
+$f3->route('DELETE /del_order', 'Order::delete');
 $f3->route('GET /orders', 'Order::findAll');
 $f3->route('POST /addOrder', 'Order::addNewOrder');
+$f3->route('GET /driver', 'Complete::driver');
+$f3->route('GET /client', 'Complete::client');
 /** @doc
  * Запуск фреймворка
  */

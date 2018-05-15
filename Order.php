@@ -8,18 +8,6 @@
 
 class Order extends Main
 {
-
-    public static function get(Base $f3)
-    {
-        $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
-            $f3->get('PARAMS.id'));
-        if (count($result) != 0) {
-            echo json_encode($result);
-        } else {
-            echo $f3->error('404');
-        }
-    }
-
     public static function put(Base $f3)
     {
         $parameter = $f3->get('PARAMS.id');
@@ -29,14 +17,11 @@ class Order extends Main
     }
     public static function delete(Base $f3)
     {
-        $f3->get('DB')->exec("DELETE from orders WHERE id = ?",
-            $f3->get('PARAMS.id'));
-        if($f3->get('SESSION.client_order') != null) {
+        if ($f3->get('SESSION.client_order') != null) {
+            $f3->get('DB')->exec("DELETE from orders WHERE client_number = ?",
+                $f3->get('SESSION.client_order'));
             $f3->clear('SESSION.client_order');
-        } else if(($f3->get('SESSION.order')) != null) {
-            $f3->clear('SESSION.order');
         }
-
     }
 
     public static function findAll(Base $f3)
@@ -76,7 +61,14 @@ class Order extends Main
                 "INSERT INTO orders (`from`, `to`, value, client_name, client_number, date) VALUE (?, ?, ?, ?, ?, ?)",
                 array_values($body)
             );
+            $f3->set('SESSION.order_value', $body['value']);
             $f3->set('SESSION.client_order', $body['client_number']);
+            $result = $f3->get('DB')->exec('SELECT id FROM orders WHERE client_number = ?',
+            $f3->get('SESSION.client_order')
+            );
+            $json_res =  json_encode($result);
+            $json_code = json_decode($json_res, true);
+            $f3->set('SESSION.order_id', $json_code[0]['id']);
             echo json_encode(array('result'=>'success', 'what'=>'Order was successfully added'));
         } else {
             http_response_code(422);
