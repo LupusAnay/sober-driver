@@ -38,7 +38,10 @@ class Order extends Main
                 echo json_encode(array('result' => 'error', 'what' => 'Order not found'));
 
             }
-        } else if($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client'){
+        } else if($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client') {
+            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
+            echo json_encode($result);
+        } else if($f3->get('SESSION.session_type') === 'driver') {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
         } else {

@@ -77,15 +77,20 @@ $f3->route('GET /session',
 );
 $f3->route('GET /kill',
     function () use ($f3) {
-        if($f3->get('SESSION.session_type') === 'driver') {
-            $f3->get('DB')->exec("UPDATE orders SET status = 'ready', driver_phone = 'null' WHERE id = ?",
-                $f3->get('SESSION.order_id')
-            );
+        if($f3->get('SESSION.order_id') != null) {
+            if($f3->get('SESSION.session_type') === 'driver') {
+                $f3->get('DB')->exec("UPDATE orders SET status = 'ready', driver_phone = 'null' WHERE id = ?",
+                    $f3->get('SESSION.order_id')
+                );
+                $f3->clear('SESSION');
+            } else if($f3->get('SESSION.session_type') === 'client') {
+                $f3->get('DB')->exec("DELETE FROM orders WHERE id = ?",
+                    $f3->get('SESSION.order_id')
+                );
+                $f3->clear('SESSION');
+            }
+        } else {
             $f3->clear('SESSION');
-        } else if($f3->get('SESSION.session_type') === 'client') {
-            $f3->get('DB')->exec("DELETE FROM orders WHERE id = ?",
-                $f3->get('SESSION.order_id')
-            );
         }
     }
 );
