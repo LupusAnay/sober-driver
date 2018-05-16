@@ -10,42 +10,40 @@ class Order extends Main
 {
     public static function put(Base $f3)
     {
-        $parameter = $f3->get('PARAMS.id');
-        $f3->get('DB')->exec("UPDATE orders SET status = 'taken' WHERE id = ?",
-            $parameter);
-        $f3->set('SESSION.order', $parameter);
+        $parameters = [];
+        $req_parameter = $f3->get('PARAMS.id');
+        array_push($parameters, $f3->get('SESSION.driver_phone'), $req_parameter);
+        $f3->get('DB')->exec("UPDATE orders SET status = 'taken', driver_phone = ? WHERE id = ?",
+            $parameters);
+        $f3->set('SESSION.order_id', $req_parameter);
     }
     public static function delete(Base $f3)
     {
-        if ($f3->get('SESSION.client_order') != null) {
-            $f3->get('DB')->exec("DELETE from orders WHERE client_number = ?",
-                $f3->get('SESSION.client_order'));
-            $f3->clear('SESSION.client_order');
+        if ($f3->get('SESSION.order_id') != null) {
+            $f3->get('DB')->exec("DELETE from orders WHERE id = ?",
+                $f3->get('SESSION.order_id'));
+            $f3->clear('SESSION.order_id');
         }
     }
 
     public static function findAll(Base $f3)
     {
-        if($f3->get('SESSION.order') != null) {
+        if($f3->get('SESSION.order_id') != null) {
             $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
-                $f3->get('SESSION.order'));
+                $f3->get('SESSION.order_id'));
             if (count($result) != 0) {
                 echo json_encode($result);
             } else {
-                echo $f3->error('404');
-            }
+                http_response_code(404);
+                echo json_encode(array('result' => 'error', 'what' => 'Order not found'));
 
-        } else if($f3->get('SESSION.client_order') != null){
-            $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE client_number = ?',
-                $f3->get('SESSION.client_order'));
-            if (count($result) != 0) {
-                echo json_encode($result);
-            } else {
-                echo $f3->error('404');
             }
-        } else {
-            $result = $f3->get('DB')->exec('SELECT * FROM orders');
+        } else if($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client'){
+            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
+        } else {
+            http_response_code(403);
+            echo json_encode(array('result' => 'error', 'what' => 'create an order'));
         }
     }
 
@@ -62,9 +60,10 @@ class Order extends Main
                 array_values($body)
             );
             $f3->set('SESSION.order_value', $body['value']);
-            $f3->set('SESSION.client_order', $body['client_number']);
+            $f3->set('SESSION.client_phone', $body['client_number']);
+            $f3->set('SESSION.session_type', 'client');
             $result = $f3->get('DB')->exec('SELECT id FROM orders WHERE client_number = ?',
-            $f3->get('SESSION.client_order')
+            $f3->get('SESSION.client_phone')
             );
             $json_res =  json_encode($result);
             $json_code = json_decode($json_res, true);

@@ -54,7 +54,7 @@ class Main
 {
     /*static function beforeroute(Base $f3)
     {
-       if($f3->get('SESSION.logged') != true) {
+       if($f3->get('SESSION.session_type') === 'client') {
 
        }
     }*/
@@ -67,7 +67,12 @@ $f3->route('POST /login',
 
 $f3->route('GET /session',
     function () use ($f3) {
-        echo json_encode($f3->get('SESSION'));
+        $session_array = array(
+            'order_id' => $f3->get('SESSION.order_id'),
+            'logged' => $f3->get('SESSION.logged'),
+            'session_type' => $f3->get('SESSION.session_type')
+            );
+        echo json_encode($session_array);
     }
 );
 $f3->route('GET /kill',
@@ -78,7 +83,6 @@ $f3->route('GET /kill',
 $f3->route('GET /order_complete',
     function () use ($f3) {
         $f3->clear('SESSION.order_id');
-        $f3->clear('SESSION.order');
     }
 );
 

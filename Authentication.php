@@ -34,6 +34,7 @@ class Authentication extends Main
                 array_values($body)
             );
             $f3->set('SESSION.logged', true);
+            $f3->set('SESSION.session_type', 'driver');
             $f3->set('SESSION.driver_phone', $body['phone']);
             echo json_encode(array('result' => 'success', 'what' => 'Registration successful'));
         } else {
