@@ -52,6 +52,7 @@ class Authentication extends Main
             $f3->set('SESSION.driver_phone', $body['phone']);
             echo json_encode(array('result' => 'success', 'what' => 'Вы успешно вошли'));
         } else {
+            http_response_code(422);
             echo json_encode(array('result' => 'error', 'what' => 'Учетная запись с такими данными не найдена'));
         }
     }
