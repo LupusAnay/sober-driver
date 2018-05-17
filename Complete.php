@@ -16,10 +16,10 @@ class Complete
                 $f3->get('SESSION.order_id')
             );
             if($result != 0) {
-                echo json_encode(array("result" => "success", "what" => "Вы подтвердили выполнение заказа"));
+                echo json_encode(array("result" => "success", "what" => "Р’С‹ РїРѕРґС‚РІРµСЂРґРёР»Рё РІС‹РїРѕР»РЅРµРЅРёРµ Р·Р°РєР°Р·Р°"));
             } else {
                 http_response_code(405);
-                echo json_encode(array('result' => 'error', 'what' => 'Зказ уже подтвержден'));
+                echo json_encode(array('result' => 'error', 'what' => 'Р—Р°РєР°Р· СѓР¶Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅ'));
             }
         }
     }
@@ -31,10 +31,10 @@ class Complete
                 $f3->get('SESSION.order_id')
             );
             if($result != 0) {
-                echo json_encode(array("result" => "success", "what" => "Вы подтвердили выполнение заказа"));
+                echo json_encode(array("result" => "success", "what" => "Р’С‹ РїРѕРґС‚РІРµСЂРґРёР»Рё РІС‹РїРѕР»РЅРµРЅРёРµ Р·Р°РєР°Р·Р°"));
             } else {
                 http_response_code(405);
-                echo json_encode(array('result' => 'error', 'what' => 'Зказ уже подтвержден'));
+                echo json_encode(array('result' => 'error', 'what' => 'Р—Р°РєР°Р· СѓР¶Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅ'));
             }
         }
     }
