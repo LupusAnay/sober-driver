@@ -35,7 +35,7 @@ class Authentication extends Main
             );
             $f3->set('SESSION.session_type', 'driver');
             $f3->set('SESSION.driver_phone', $body['phone']);
-            echo json_encode(array('result' => 'success', 'what' => 'Registration successful'));
+            echo json_encode(array('result' => 'success', 'what' => 'Регистрация успешна'));
         } else {
             http_response_code(422);
             echo json_encode(array('result' => 'error', 'what' => $msg));
@@ -50,9 +50,9 @@ class Authentication extends Main
         if((bool)password_verify($body['password'], $result[0]['password'])) {
             $f3->set('SESSION.session_type', 'driver');
             $f3->set('SESSION.driver_phone', $body['phone']);
-            return true;
+            echo json_encode(array('result' => 'success', 'what' => 'Вы успешно вошли'));
         } else {
-            return false;
+            echo json_encode(array('result' => 'error', 'what' => 'Учетная запись с такими данными не найдена'));
         }
     }
 
@@ -61,11 +61,11 @@ class Authentication extends Main
         $validator = new Validator();
         $keys = ['first_name', 'second_name', 'birthday', 'passport', 'driver_license', 'phone', 'password'];
 
-        if (count($body) !== 7) return "Invalid count of entities\r\n";
+        if (count($body) !== 7) return "Неверное количество элементов\r\n";
 
         for ($i = 0; $i < count($body); $i++) {
             if (!array_key_exists($keys[$i], $body)) {
-                return "Could not found some entities\r\n";
+                return "Не найдены требуемые элементы\r\n";
             }
         }
         $result = "";
@@ -73,7 +73,7 @@ class Authentication extends Main
         $result .= $validator->validateName($body['second_name']);
         $result .= $validator->validateDate($body['birthday']);
         $result .= $validator->validateDoc($body['passport']);
-        $result .= $validator->validaKteDoc($body['driver_license']);
+        $result .= $validator->validateDoc($body['driver_license']);
         $result .= $validator->validatePhone($body['phone']);
 
         if ($result != "") {

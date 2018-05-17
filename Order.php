@@ -36,7 +36,7 @@ class Order extends Main
                 echo json_encode($result);
             } else {
                 http_response_code(404);
-                echo json_encode(array('result' => 'error', 'what' => 'Order not found'));
+                echo json_encode(array('result' => 'error', 'what' => 'Заказ не найден'));
 
             }
         } else if($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client') {
@@ -47,7 +47,7 @@ class Order extends Main
             echo json_encode($result);
         } else {
             http_response_code(403);
-            echo json_encode(array('result' => 'error', 'what' => 'create an order'));
+            echo json_encode(array('result' => 'error', 'what' => 'Необходимо создать заказ'));
         }
     }
 
@@ -72,7 +72,7 @@ class Order extends Main
             $json_res =  json_encode($result);
             $json_code = json_decode($json_res, true);
             $f3->set('SESSION.order_id', $json_code[0]['id']);
-            echo json_encode(array('result'=>'success', 'what'=>'Order was successfully added'));
+            echo json_encode(array('result'=>'success', 'what'=>'Заказ был успешно добавлен'));
         } else {
             http_response_code(422);
             echo json_encode(array('result' => 'error', 'what' => $msg));
@@ -83,11 +83,11 @@ class Order extends Main
         $validator = new Validator();
         $keys = ['from', 'to', 'value', 'client_number', 'client_name'];
 
-        if (count($body) !== 5) return "Invalid count of entities\r\n";
+        if (count($body) !== 5) return "Неверное количество элементов\r\n";
 
         for ($i = 0; $i < count($body); $i++) {
             if (!array_key_exists($keys[$i], $body)) {
-                return "Could not found some entities\r\n";
+                return "Некоторые элементы не найдены\r\n";
             }
         }
         $result = "";

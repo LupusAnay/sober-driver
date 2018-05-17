@@ -10,14 +10,14 @@
 class Validator
 {
     public function validateValue($value) {
-        $msg = "Invalid value\r\n";
+        $msg = "Неверная цена\r\n";
         if (strlen($value) > 4) {
             return $msg;
         }
         return "";
      }
     public function validateCoordinates($value) {
-        $msg = "Invalid coordinates\r\n";
+        $msg = "Неверные координаты\r\n";
         if (!preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $value)) {
             return $msg;
         }
@@ -26,7 +26,7 @@ class Validator
 
     public function validateName($name)
     {
-        $msg = "Invalid name\r\n";
+        $msg = "Неверное имя\n";
         if (!preg_match('/^[A-zА-я]+$/u', $name)) {
             return $msg;
         }
@@ -38,7 +38,7 @@ class Validator
 
     public function validateDate($date)
     {
-        $msg = "Invalid date\r\n";
+        $msg = "Неверная дата\r\n";
         if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
             return $msg;
         }
@@ -55,7 +55,7 @@ class Validator
 
     public function validateDoc($value)
     {
-        $msg = "Invalid doc\r\n";
+        $msg = "Неверный номер документа\r\n";
         if (!preg_match('/^[0-9]{10}$/', $value)) {
             return $msg;
         }
@@ -64,7 +64,7 @@ class Validator
 
     public function validatePhone($value)
     {
-        $msg = "Invalid phone\r\n";
+        $msg = "Неверный телефон\r\n";
         if (!preg_match('/^((\+7)+([0-9]){10})$/', $value)) {
             return $msg;
         }
