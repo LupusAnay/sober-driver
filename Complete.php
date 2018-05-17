@@ -11,7 +11,7 @@ class Complete
 {
     public static function client(Base $f3){
         if($f3->get('SESSION.order_id') != null) {
-            $f3->get('DB')->exec("UPDATE orders SET client_complete_check = 'true' WHERE id = ?",
+            $f3->get('DB')->exec("UPDATE orders SET client_complete_check = 'true' WHERE id = ? AND status = 'taken'",
                 $f3->get('SESSION.order_id')
 
             );

@@ -73,7 +73,7 @@ class Authentication extends Main
         $result .= $validator->validateName($body['second_name']);
         $result .= $validator->validateDate($body['birthday']);
         $result .= $validator->validateDoc($body['passport']);
-        $result .= $validator->validateDoc($body['driver_license']);
+        $result .= $validator->validaKteDoc($body['driver_license']);
         $result .= $validator->validatePhone($body['phone']);
 
         if ($result != "") {
