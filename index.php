@@ -50,17 +50,6 @@ $f3->route('GET /',
     }
 );
 
-class Main
-{
-    /*static function beforeroute(Base $f3)
-    {
-       if($f3->get('SESSION.session_type') === 'client') {
-
-       }
-    }*/
-}
-
-
 $f3->route('GET /session',
     function () use ($f3) {
         $session_array = array(
@@ -89,19 +78,6 @@ $f3->route('GET /kill',
         }
     }
 );
-$f3->route('GET /order_complete',
-    function () use ($f3) {
-        $f3->clear('SESSION.order_id');
-    }
-);
-
-//$f3->route('GET /db',
-//    function () use ($f3) {
-//        header('Content-Type: application/json; charset=utf-8');
-//        $result = $f3->get('DB')->exec('SELECT * FROM local_base_for_testing.for_testing');
-//        echo json_encode($result);
-//    }
-//);
 
 /** @doc
  * Конфигурация маршрутизации для регистрации. Вызывает статический метод register() класса Authentication и неявно
@@ -110,7 +86,6 @@ $f3->route('GET /order_complete',
 header('Content-Type: application/json; charset=utf-8');
 $f3->route('POST /login', 'Authentication::login');
 $f3->route('POST /registration', 'Authentication::register');
-//$f3->map('/order', 'Order'); TODO: Закодить нормальный map
 $f3->route('PUT /take_order/@id', 'Order::put');
 $f3->route('DELETE /del_order', 'Order::delete');
 $f3->route('GET /orders', 'Order::findAll');

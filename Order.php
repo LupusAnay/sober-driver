@@ -6,7 +6,7 @@
  * Time: 19:46
  */
 
-class Order extends Main
+class Order
 {
     public static function put(Base $f3)
     {

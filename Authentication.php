@@ -7,7 +7,7 @@
  */
 
 //TODO Добвать документацию
-class Authentication extends Main
+class Authentication
 {
     /** @doc
      * @temp Производит проверку тела POST запроса (позже проверка будет делом отдельного модуля)
