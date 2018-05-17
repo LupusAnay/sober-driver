@@ -33,7 +33,6 @@ class Authentication extends Main
                                       VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
                 array_values($body)
             );
-            $f3->set('SESSION.logged', true);
             $f3->set('SESSION.session_type', 'driver');
             $f3->set('SESSION.driver_phone', $body['phone']);
             echo json_encode(array('result' => 'success', 'what' => 'Registration successful'));
@@ -50,7 +49,6 @@ class Authentication extends Main
         $result = $f3->get('DB')->exec('SELECT password FROM employees WHERE phone = :phone', array(':phone' => $body['phone']));
         if((bool)password_verify($body['password'], $result[0]['password'])) {
             $f3->set('SESSION.session_type', 'driver');
-            $f3->set('SESSION.logged', true);
             $f3->set('SESSION.driver_phone', $body['phone']);
             return true;
         } else {

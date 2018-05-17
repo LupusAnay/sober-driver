@@ -69,7 +69,6 @@ $f3->route('GET /session',
     function () use ($f3) {
         $session_array = array(
             'order_id' => $f3->get('SESSION.order_id'),
-            'logged' => $f3->get('SESSION.logged'),
             'session_type' => $f3->get('SESSION.session_type')
             );
         echo json_encode($session_array);
@@ -79,7 +78,7 @@ $f3->route('GET /kill',
     function () use ($f3) {
         if($f3->get('SESSION.order_id') != null) {
             if($f3->get('SESSION.session_type') === 'driver') {
-                $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'false', driver_ status = 'ready', driver_phone = 'null' WHERE id = ?",
+                $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'false' status = 'ready', driver_phone = 'null' WHERE id = ?",
                     $f3->get('SESSION.order_id')
                 );
                 $f3->clear('SESSION');
