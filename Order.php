@@ -36,13 +36,11 @@ class Order
             if (count($result) != 0) {
                 echo json_encode($result);
             } else {
+                $f3->clear('SESSION.order_id');
                 http_response_code(404);
                 echo json_encode(array('result' => 'error', 'what' => 'Заказ не найден'));
 
             }
-        } else if ($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client') {
-            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
-            echo json_encode($result);
         } else if ($f3->get('SESSION.session_type') === 'driver') {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
