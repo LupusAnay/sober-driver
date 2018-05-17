@@ -9,14 +9,17 @@
 //TODO Добвать документацию
 class Validator
 {
-    public function validateValue($value) {
+    public function validateValue($value)
+    {
         $msg = "Неверная цена\r\n";
         if (strlen($value) > 4) {
             return $msg;
         }
         return "";
-     }
-    public function validateCoordinates($value) {
+    }
+
+    public function validateCoordinates($value)
+    {
         $msg = "Неверные координаты\r\n";
         if (!preg_match('/^([-+]?)([\d]{1,2})(((\.)(\d+)(,)))(\s*)(([-+]?)([\d]{1,3})((\.)(\d+))?)$/', $value)) {
             return $msg;

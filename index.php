@@ -59,30 +59,26 @@ class Main
        }
     }*/
 }
-$f3->route('POST /login',
-    function () use ($f3) {
-        echo json_encode(Authentication::login($f3));
-    }
-);
+
 
 $f3->route('GET /session',
     function () use ($f3) {
         $session_array = array(
             'order_id' => $f3->get('SESSION.order_id'),
             'session_type' => $f3->get('SESSION.session_type')
-            );
+        );
         echo json_encode($session_array);
     }
 );
 $f3->route('GET /kill',
     function () use ($f3) {
-        if($f3->get('SESSION.order_id') != null) {
-            if($f3->get('SESSION.session_type') === 'driver') {
+        if ($f3->get('SESSION.order_id') != null) {
+            if ($f3->get('SESSION.session_type') === 'driver') {
                 $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'false' status = 'ready', driver_phone = 'null' WHERE id = ?",
                     $f3->get('SESSION.order_id')
                 );
                 $f3->clear('SESSION');
-            } else if($f3->get('SESSION.session_type') === 'client') {
+            } else if ($f3->get('SESSION.session_type') === 'client') {
                 $f3->get('DB')->exec("DELETE FROM orders WHERE id = ?",
                     $f3->get('SESSION.order_id')
                 );
@@ -112,6 +108,7 @@ $f3->route('GET /order_complete',
  * передает ему параметры $f3 и $params
  */
 header('Content-Type: application/json; charset=utf-8');
+$f3->route('POST /login', 'Authentication::login');
 $f3->route('POST /registration', 'Authentication::register');
 //$f3->map('/order', 'Order'); TODO: Закодить нормальный map
 $f3->route('PUT /take_order/@id', 'Order::put');

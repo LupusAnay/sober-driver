@@ -17,6 +17,7 @@ class Order extends Main
             $parameters);
         $f3->set('SESSION.order_id', $req_parameter);
     }
+
     public static function delete(Base $f3)
     {
         if ($f3->get('SESSION.order_id') != null) {
@@ -29,7 +30,7 @@ class Order extends Main
 
     public static function findAll(Base $f3)
     {
-        if($f3->get('SESSION.order_id') != null) {
+        if ($f3->get('SESSION.order_id') != null) {
             $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
                 $f3->get('SESSION.order_id'));
             if (count($result) != 0) {
@@ -39,10 +40,10 @@ class Order extends Main
                 echo json_encode(array('result' => 'error', 'what' => 'Заказ не найден'));
 
             }
-        } else if($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client') {
+        } else if ($f3->get('SESSION.order_id') != null and $f3->get('SESSION.session_type') === 'client') {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
-        } else if($f3->get('SESSION.session_type') === 'driver') {
+        } else if ($f3->get('SESSION.session_type') === 'driver') {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
         } else {
@@ -54,11 +55,11 @@ class Order extends Main
     public static function addNewOrder(Base $f3)
     {
         $body = json_decode($f3->get('BODY'), true);
-        $body['value'] = (float) $body['value'];
+        $body['value'] = (float)$body['value'];
         $msg = Order::validateOrderData($body);
         if ($msg === true) {
             array_push($body, date('y-m-d'));
-            $body['value'] = (float) $body['value'];
+            $body['value'] = (float)$body['value'];
             $f3->get('DB')->exec(
                 "INSERT INTO orders (`from`, `to`, value, client_name, client_number, date) VALUE (?, ?, ?, ?, ?, ?)",
                 array_values($body)
@@ -67,19 +68,20 @@ class Order extends Main
             $f3->set('SESSION.client_phone', $body['client_number']);
             $f3->set('SESSION.session_type', 'client');
             $result = $f3->get('DB')->exec('SELECT id FROM orders WHERE client_number = ?',
-            $f3->get('SESSION.client_phone')
+                $f3->get('SESSION.client_phone')
             );
-            $json_res =  json_encode($result);
+            $json_res = json_encode($result);
             $json_code = json_decode($json_res, true);
             $f3->set('SESSION.order_id', $json_code[0]['id']);
-            echo json_encode(array('result'=>'success', 'what'=>'Заказ был успешно добавлен'));
+            echo json_encode(array('result' => 'success', 'what' => 'Заказ был успешно добавлен'));
         } else {
             http_response_code(422);
             echo json_encode(array('result' => 'error', 'what' => $msg));
         }
     }
 
-    public static function validateOrderData($body) {
+    public static function validateOrderData($body)
+    {
         $validator = new Validator();
         $keys = ['from', 'to', 'value', 'client_number', 'client_name'];
 

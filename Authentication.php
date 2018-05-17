@@ -19,7 +19,7 @@ class Authentication extends Main
 
     public static function register(Base $f3)
     {
-        $body = json_decode($f3->get('BODY'), true);
+        $body = json_decode($f3->get("BODY"), true);
         $msg = Authentication::validateRegistrationData($body);
         $validator = new Validator();
         if ($msg === true) {
@@ -27,40 +27,25 @@ class Authentication extends Main
              * @warn
              * Использование обычного HTTP для передачи паролей без шифрования не безопасно.
              */
-            $body['password'] = password_hash($body['password'], PASSWORD_DEFAULT);
-            $f3->get('DB')->exec(
-                'INSERT INTO employees (first_name, second_name, birthday, passport, driver_license, phone, password, points) 
-                                      VALUES (?, ?, ?, ?, ?, ?, ?, 0)',
+            $body["password"] = password_hash($body["password"], PASSWORD_DEFAULT);
+            $f3->get("DB")->exec(
+                "INSERT INTO employees (first_name, second_name, birthday, passport, driver_license, phone, password, points) 
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, 0)",
                 array_values($body)
             );
-            $f3->set('SESSION.session_type', 'driver');
-            $f3->set('SESSION.driver_phone', $body['phone']);
-            echo json_encode(array('result' => 'success', 'what' => 'Регистрация успешна'));
+            $f3->set("SESSION.session_type", "driver");
+            $f3->set("SESSION.driver_phone", $body["phone"]);
+            echo json_encode(array("result" => "success", "what" => "Регистрация успешна"));
         } else {
             http_response_code(422);
-            echo json_encode(array('result' => 'error', 'what' => $msg));
-        }
-    }
-
-    public static function login(Base $f3)
-    {
-        $body = json_decode($f3->get('BODY'), true);
-        $db = $f3->get('DB');
-        $result = $f3->get('DB')->exec('SELECT password FROM employees WHERE phone = :phone', array(':phone' => $body['phone']));
-        if((bool)password_verify($body['password'], $result[0]['password'])) {
-            $f3->set('SESSION.session_type', 'driver');
-            $f3->set('SESSION.driver_phone', $body['phone']);
-            echo json_encode(array('result' => 'success', 'what' => 'Вы успешно вошли'));
-        } else {
-            http_response_code(422);
-            echo json_encode(array('result' => 'error', 'what' => 'Учетная запись с такими данными не найдена'));
+            echo json_encode(array("result" => "error", "what" => $msg));
         }
     }
 
     public static function validateRegistrationData($body)
     {
         $validator = new Validator();
-        $keys = ['first_name', 'second_name', 'birthday', 'passport', 'driver_license', 'phone', 'password'];
+        $keys = ["first_name", "second_name", "birthday", "passport", "driver_license", "phone", "password"];
 
         if (count($body) !== 7) return "Неверное количество элементов\r\n";
 
@@ -70,17 +55,32 @@ class Authentication extends Main
             }
         }
         $result = "";
-        $result .= $validator->validateName($body['first_name']);
-        $result .= $validator->validateName($body['second_name']);
-        $result .= $validator->validateDate($body['birthday']);
-        $result .= $validator->validateDoc($body['passport']);
-        $result .= $validator->validateDoc($body['driver_license']);
-        $result .= $validator->validatePhone($body['phone']);
+        $result .= $validator->validateName($body["first_name"]);
+        $result .= $validator->validateName($body["second_name"]);
+        $result .= $validator->validateDate($body["birthday"]);
+        $result .= $validator->validateDoc($body["passport"]);
+        $result .= $validator->validateDoc($body["driver_license"]);
+        $result .= $validator->validatePhone($body["phone"]);
 
         if ($result != "") {
             return $result;
         } else {
             return true;
+        }
+    }
+
+    public static function login(Base $f3)
+    {
+        $body = json_decode($f3->get("BODY"), true);
+        $db = $f3->get("DB");
+        $result = $f3->get("DB")->exec("SELECT password FROM employees WHERE phone = :phone", array(":phone" => $body["phone"]));
+        if ((bool)password_verify($body["password"], $result[0]["password"])) {
+            $f3->set("SESSION.session_type", "driver");
+            $f3->set("SESSION.driver_phone", $body["phone"]);
+            echo json_encode(array("result" => "success", "what" => "Вы успешно вошли"));
+        } else {
+            http_response_code(422);
+            echo json_encode(array("result" => "error", "what" => "Учетная запись с такими данными не найдена\r\n"));
         }
     }
 }
