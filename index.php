@@ -78,7 +78,12 @@ $f3->route('GET /kill',
         }
     }
 );
-
+$f3->route('GET /order_complete',
+    function () use ($f3) {
+    if($f3->get('SESSION.order_id') != null)
+    $f3->clear('SESSION.order_id');
+    }
+);
 /** @doc
  * Конфигурация маршрутизации для регистрации. Вызывает статический метод register() класса Authentication и неявно
  * передает ему параметры $f3 и $params
