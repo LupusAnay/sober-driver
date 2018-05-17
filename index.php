@@ -79,7 +79,7 @@ $f3->route('GET /kill',
     function () use ($f3) {
         if($f3->get('SESSION.order_id') != null) {
             if($f3->get('SESSION.session_type') === 'driver') {
-                $f3->get('DB')->exec("UPDATE orders SET status = 'ready', driver_phone = 'null' WHERE id = ?",
+                $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'false', driver_ status = 'ready', driver_phone = 'null' WHERE id = ?",
                     $f3->get('SESSION.order_id')
                 );
                 $f3->clear('SESSION');
