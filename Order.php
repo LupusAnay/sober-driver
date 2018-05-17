@@ -22,6 +22,7 @@ class Order extends Main
         if ($f3->get('SESSION.order_id') != null) {
             $f3->get('DB')->exec("DELETE from orders WHERE id = ?",
                 $f3->get('SESSION.order_id'));
+            $f3->clear('SESSION.session_type');
             $f3->clear('SESSION.order_id');
         }
     }
