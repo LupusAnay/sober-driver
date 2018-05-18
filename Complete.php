@@ -27,7 +27,7 @@ class Complete
     public static function driver(Base $f3)
     {
         if ($f3->get('SESSION.order_id') != null) {
-            $result = $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'true' WHERE id = ?",
+            $result = $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'true' WHERE id = ? AND status = 'taken'",
                 $f3->get('SESSION.order_id')
             );
             if($result != 0) {

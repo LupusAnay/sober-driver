@@ -31,17 +31,23 @@ class Order
     public static function findAll(Base $f3)
     {
         if ($f3->get('SESSION.order_id') != null) {
-            $result = $f3->get('DB')->exec('SELECT * FROM orders WHERE id = ?',
+            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'ready' OR status = 'taken' ",
+                $f3->get('SESSION.order_id'));
+            $rusult_with_complete = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'complete'",
                 $f3->get('SESSION.order_id'));
             if (count($result) != 0) {
                 echo json_encode($result);
+            } else if(count($rusult_with_complete) != 0) {
+                $f3->clear('SESSION.order_id');
+                http_response_code(403);
+                echo json_encode(array('result' => 'error', 'what' => 'Заказ уже удален'));
             } else {
                 $f3->clear('SESSION.order_id');
                 http_response_code(404);
                 echo json_encode(array('result' => 'error', 'what' => 'Заказ не найден'));
-
             }
-        } else if ($f3->get('SESSION.session_type') === 'driver') {
+        }
+        else if ($f3->get('SESSION.session_type') === 'driver') {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
         } else {
