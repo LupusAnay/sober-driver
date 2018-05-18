@@ -71,7 +71,7 @@ class Order
             $f3->set('SESSION.order_value', $body['value']);
             $f3->set('SESSION.client_phone', $body['client_number']);
             $f3->set('SESSION.session_type', 'client');
-            $result = $f3->get('DB')->exec('SELECT id FROM orders WHERE client_number = ?',
+            $result = $f3->get('DB')->exec("SELECT id FROM orders WHERE client_number = ? AND status = 'ready'",
                 $f3->get('SESSION.client_phone')
             );
             $json_res = json_encode($result);
