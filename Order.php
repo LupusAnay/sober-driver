@@ -31,7 +31,7 @@ class Order
     public static function findAll(Base $f3)
     {
         if ($f3->get('SESSION.order_id') != null) {
-            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'ready' OR status = 'taken' ",
+            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'ready' OR 'taken' ",
                 $f3->get('SESSION.order_id'));
             $result_with_complete = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'complete'",
                 $f3->get('SESSION.order_id'));
