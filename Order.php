@@ -31,7 +31,7 @@ class Order
     public static function findAll(Base $f3)
     {
         if ($f3->get('SESSION.order_id') != null) {
-            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ?",
+            $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status <> 'complete'",
                 $f3->get('SESSION.order_id'));
             $result_with_complete = $f3->get('DB')->exec("SELECT * FROM orders WHERE  id = ? AND status = 'complete'",
                 $f3->get('SESSION.order_id'));
@@ -47,12 +47,12 @@ class Order
                 echo json_encode(array('result' => 'error', 'what' => 'Заказ не найден'));
             }
         }
-        else if ($f3->get('SESSION.session_type') === 'driver') {
+        else if ($f3->get('SESSION.session_type') === 'driver' && $f3->get('SESSION.order_id') === null) {
             $result = $f3->get('DB')->exec("SELECT * FROM orders WHERE status = 'ready'");
             echo json_encode($result);
         } else {
             http_response_code(403);
-            echo json_encode(array('result' => 'error', 'what' => 'Необходимо создать заказ'));
+            echo json_encode(array('result' => 'error', 'what' => 'Для вас нет подходящих заказов'));
         }
     }
 
