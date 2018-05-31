@@ -10,12 +10,11 @@
  */
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Headers: Content-Type");
-
+header('Access-Control-Allow-Credentials: true');
 /** @doc
  * Подключение заголовочного файла фреймворка FatFree
  */
 $f3 = require('lib/base.php');
-
 /** @doc
  * Устанавливает параметры отладки и проверяет версию PCRE
  */
@@ -51,29 +50,47 @@ $f3->route('GET /',
     }
 );
 
-$f3->route('POST /login',
+$f3->route('GET /session',
     function () use ($f3) {
-        echo json_encode(Authentication::login($f3));
+        $session_array = array(
+            'order_id' => $f3->get('SESSION.order_id'),
+            'session_type' => $f3->get('SESSION.session_type')
+        );
+        echo json_encode($session_array);
     }
 );
-
-
-//$f3->route('GET /db',
-//    function () use ($f3) {
-//        header('Content-Type: application/json; charset=utf-8');
-//        $result = $f3->get('DB')->exec('SELECT * FROM local_base_for_testing.for_testing');
-//        echo json_encode($result);
-//    }
-//);
-
+$f3->route('GET /kill',
+    function () use ($f3) {
+        if ($f3->get('SESSION.order_id') != null) {
+            if ($f3->get('SESSION.session_type') === 'driver') {
+                $f3->get('DB')->exec("UPDATE orders SET driver_complete_check = 'false',  status = 'ready', driver_phone = 'null' WHERE id = ?",
+                    $f3->get('SESSION.order_id')
+                );
+                $f3->clear('SESSION');
+            } else if ($f3->get('SESSION.session_type') === 'client') {
+                $f3->get('DB')->exec("DELETE FROM orders WHERE id = ?",
+                    $f3->get('SESSION.order_id')
+                );
+                $f3->clear('SESSION');
+            }
+        } else {
+            $f3->clear('SESSION');
+        }
+    }
+);
 /** @doc
  * Конфигурация маршрутизации для регистрации. Вызывает статический метод register() класса Authentication и неявно
  * передает ему параметры $f3 и $params
  */
+header('Content-Type: application/json; charset=utf-8');
+$f3->route('POST /login', 'Authentication::login');
 $f3->route('POST /registration', 'Authentication::register');
-$f3->map('/orders/@id', 'Order');
+$f3->route('PUT /take_order/@id', 'Order::put');
+$f3->route('DELETE /del_order', 'Order::delete');
 $f3->route('GET /orders', 'Order::findAll');
 $f3->route('POST /addOrder', 'Order::addNewOrder');
+$f3->route('GET /driver', 'Complete::driver');
+$f3->route('GET /client', 'Complete::client');
 /** @doc
  * Запуск фреймворка
  */
